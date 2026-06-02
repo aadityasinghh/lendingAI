@@ -366,3 +366,9 @@ curl -X POST http://localhost:8000/debug/calculate-emi \
 - multilingual and voice interfaces
 - refresh-token based auth
 - richer output validation with stricter JSON schema enforcement
+
+![AI Loan Advisor UI](./demo/image1.png)
+![AI Loan Advisor UI](./demo/image2.png)
+![AI Loan Advisor UI](./demo/image3.png)
+![AI Loan Advisor UI](./demo/image4.png)
+![AI Loan Advisor UI](./demo/image5.png)
