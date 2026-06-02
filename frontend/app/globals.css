@@ -499,3 +499,64 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+/* Horizontal loan cards row */
+.loan-card-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* Small screens: 1–2 per row */
+@media (max-width: 1024px) {
+  .loan-card-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .loan-card-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.loan-card {
+  border-radius: 18px;
+  border: 1px solid rgba(31, 26, 23, 0.08);
+  background: rgba(255, 255, 255, 0.75);
+  padding: 14px 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.loan-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.loan-card-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.loan-source {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.loan-card-body {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+  font-size: 0.85rem;
+}
+
+.loan-card-body dt {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.loan-card-body dd {
+  margin: 2px 0 0;
+}

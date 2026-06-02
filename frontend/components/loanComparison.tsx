@@ -2,16 +2,46 @@
 
 import { useEffect, useState } from "react";
 
+type LoanOption = {
+  id: string;
+  source: string;
+  productName: string;
+};
+
+type ComparisonResult = {
+  first: {
+    id: string;
+    name: string;
+    interest_rate: number;
+    maximum_amount: number;
+    minimum_income: number;
+    tenure_range: [number, number];
+  };
+  second: {
+    id: string;
+    name: string;
+    interest_rate: number;
+    maximum_amount: number;
+    minimum_income: number;
+    tenure_range: [number, number];
+  };
+  deltas: {
+    interest_rate: number;
+    max_amount: number;
+    minimum_income: number;
+  };
+};
+
 export function LoanComparison() {
-  const [options, setOptions] = useState<any[]>([]);
+  const [options, setOptions] = useState<LoanOption[]>([]);
   const [first, setFirst] = useState("");
   const [second, setSecond] = useState("");
-  const [comparison, setComparison] = useState<any>(null);
+  const [comparison, setComparison] = useState<ComparisonResult | null>(null);
 
   useEffect(() => {
     fetch("/api/loans")
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: any[]) => {
         setOptions(data);
         if (data.length >= 2) {
           setFirst(data[0].id);
@@ -21,6 +51,7 @@ export function LoanComparison() {
   }, []);
 
   async function handleCompare() {
+    if (!first || !second || first === second) return;
     const res = await fetch(`/api/compare?first=${first}&second=${second}`);
     const data = await res.json();
     setComparison(data);
@@ -59,11 +90,28 @@ export function LoanComparison() {
           Compare
         </button>
 
-        {comparison ? (
+        {comparison && (
           <div className="insight-card">
-            <pre>{JSON.stringify(comparison, null, 2)}</pre>
+            <h3 style={{ margin: 0, fontSize: "0.95rem" }}>Comparison summary</h3>
+            <p>
+              <strong>{comparison.first.name}</strong> vs{" "}
+              <strong>{comparison.second.name}</strong>
+            </p>
+            <p>
+              Interest rate: {comparison.first.interest_rate}% vs{" "}
+              {comparison.second.interest_rate}% (
+              {comparison.deltas.interest_rate.toFixed(2)} difference)
+            </p>
+            <p>
+              Max amount: ₹{comparison.first.maximum_amount.toLocaleString()} vs ₹
+              {comparison.second.maximum_amount.toLocaleString()}
+            </p>
+            <p>
+              Min income: ₹{comparison.first.minimum_income.toLocaleString()} vs ₹
+              {comparison.second.minimum_income.toLocaleString()}
+            </p>
           </div>
-        ) : null}
+        )}
       </div>
     </section>
   );
